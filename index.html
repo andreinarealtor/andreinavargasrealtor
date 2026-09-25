@@ -493,17 +493,47 @@ function renderZones(){
   if(cur) sel.value = cur;
 }
 function renderFilters(){
-  const box = document.getElementById("filters"); box.innerHTML = "";
-  [["all",{es:"Todas",en:"All"}], ...Object.entries(ZONES)].forEach(([k,l])=>{
-    const b = document.createElement("button"); b.type="button"; b.textContent = l[lang];
-    b.setAttribute("aria-pressed", String(zone===k));
-    b.addEventListener("click",()=>{ zone=k; renderFilters(); renderProjects(); });
+  const box = document.getElementById("filters");
+  box.innerHTML = "";
+
+  const builders = [...new Set(P.map(p => p.b))].sort();
+  const options = ["all", ...builders];
+
+  options.forEach(k => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = k === "all" ? (lang === "es" ? "Todas" : "All") : k;
+    b.setAttribute("aria-pressed", String(builder === k));
+    b.addEventListener("click", () => {
+      builder = k;
+      renderFilters();
+      renderProjects();
+    });
+    box.append(b);
+  });
+}function renderFilters(){
+  const box = document.getElementById("filters");
+  box.innerHTML = "";
+
+  const builders = [...new Set(P.map(p => p.b))].sort();
+  const options = ["all", ...builders];
+
+  options.forEach(k => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = k === "all" ? (lang === "es" ? "Todas" : "All") : k;
+    b.setAttribute("aria-pressed", String(builder === k));
+    b.addEventListener("click", () => {
+      builder = k;
+      renderFilters();
+      renderProjects();
+    });
     box.append(b);
   });
 }
 function renderProjects(){
   const g = document.getElementById("projects"); g.innerHTML = "";
-  P.filter(p=>zone==="all"||p.z===zone).forEach(p=>{
+  P.filter(p=>(zone==="all"||p.z===zone)&&(builder==="all"||p.b===builder)).forEach(p=>{
     const c = document.createElement("article"); c.className="proj";
     const top = document.createElement("div");
     const z = document.createElement("div"); z.className="zone"; z.textContent = ZONES[p.z][lang];
