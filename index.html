@@ -465,6 +465,7 @@ const P = [
   {z:"ocala", n:"Ocala Crossings South", b:"D.R. Horton", t:["sf"], d:{es:"Todas las edades",en:"All ages"}, p:null, ps:{es:"Desde $270s",en:"From $270s"}},
   {z:"ocala", n:"JB Ranch", b:"D.R. Horton", t:["sf","adult"], d:{es:"Comunidad 55+",en:"55+ community"}, p:null, ps:{es:"Desde $280s",en:"From $280s"}},
   {z:"ocala", n:"Summercrest", b:"Centex", t:["sf","adult"], d:{es:"Comunidad 55+",en:"55+ community"}, p:null, ps:{es:"Desde $290s",en:"From $290s"}}
+  {z:"lake-nona", n:"Nona West", b:"D.R. Horton", t:["th"], d:{es:"Townhomes de construcción nueva",en:"New construction townhomes"}, p:401990},
 ];
 const ZONE_FROM = {"lake-nona":354990,"osceola":363990,"west":429990,"davenport":244990,"minneola":390000,"ocala":270000};
 
@@ -511,26 +512,7 @@ function renderFilters(){
     });
     box.append(b);
   });
-}function renderFilters(){
-  const box = document.getElementById("filters");
-  box.innerHTML = "";
 
-  const builders = [...new Set(P.map(p => p.b))].sort();
-  const options = ["all", ...builders];
-
-  options.forEach(k => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = k === "all" ? (lang === "es" ? "Todas" : "All") : k;
-    b.setAttribute("aria-pressed", String(builder === k));
-    b.addEventListener("click", () => {
-      builder = k;
-      renderFilters();
-      renderProjects();
-    });
-    box.append(b);
-  });
-}
 function renderProjects(){
   const g = document.getElementById("projects"); g.innerHTML = "";
   P.filter(p=>(zone==="all"||p.z===zone)&&(builder==="all"||p.b===builder)).forEach(p=>{
